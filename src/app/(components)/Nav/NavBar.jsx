@@ -43,12 +43,7 @@ export default async function NavBar() {
             >
               Shop now
             </Link>
-            <Link
-              href="/shop"
-              className="text-sm font-medium text-gray-700 hover:text-violet-700 transition"
-            >
-              Shop
-            </Link>
+
             <Link
               href="/cart"
               className="text-sm font-medium text-gray-700 hover:text-violet-700 transition"
@@ -81,7 +76,14 @@ export default async function NavBar() {
                     Orders
                   </Link>
                 )}
-
+                {isAdmin && (
+                  <Link
+                    href="/admin/messages"
+                    className="text-sm font-medium text-gray-700 hover:text-violet-700 transition"
+                  >
+                    Messages
+                  </Link>
+                )}
                 {/* Avatar dropdown (client component) */}
                 <AvatarDropdown />
               </>
