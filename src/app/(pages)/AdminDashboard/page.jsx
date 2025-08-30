@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import {
   FaBoxOpen,
@@ -122,10 +123,10 @@ export default function AdminPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-950 via-purple-900 to-violet-800">
         <div className="flex flex-col items-center">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-violet-600 mb-3"></div>
-          <span className="text-sm text-gray-700">Loading dashboard...</span>
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-violet-300 mb-3"></div>
+          <span className="text-sm text-violet-200">Loading dashboard...</span>
         </div>
       </div>
     );
@@ -133,9 +134,9 @@ export default function AdminPage() {
 
   if (!me || me.role !== "admin") {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-        <div className="text-center p-8 bg-white rounded-xl shadow-md max-w-md w-full">
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+      <div className="min-h-screen bg-gradient-to-br from-red-100 to-red-200 flex items-center justify-center px-4">
+        <div className="text-center p-8 bg-white rounded-2xl shadow-md max-w-md w-full">
+          <div className="w-16 h-16 bg-red-200 rounded-full flex items-center justify-center mx-auto mb-4">
             <FaBoxOpen className="text-red-600 text-2xl" />
           </div>
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
@@ -155,98 +156,110 @@ export default function AdminPage() {
   const totalStock = products.reduce((s, p) => s + (p.stock || 0), 0);
 
   return (
-    <main className="min-h-screen bg-gray-50 p-4 sm:p-6">
+    <main className="min-h-screen bg-gradient-to-br from-violet-950 via-purple-900 to-violet-800 text-white p-6">
       {/* Header */}
-      <div className="mb-5 sm:mb-6">
-        <h1 className="text-lg sm:text-2xl font-bold text-gray-900">
-          Product Management
-        </h1>
-        <p className="text-gray-700 text-xs sm:text-sm">
-          Manage and track your products
-        </p>
+      <div className="mb-6">
+        <h1 className="text-xl sm:text-3xl font-bold">📦 Product Management</h1>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
-        {[
-          {
-            label: "Total Products",
-            value: products.length,
-            icon: <FaBoxOpen />,
-          },
-          { label: "Total Stock", value: totalStock, icon: <FaWarehouse /> },
-          {
-            label: "Total Value",
-            value: `€${totalValue.toFixed(2)}`,
-            icon: <FaEuroSign />,
-          },
-        ].map((stat, i) => (
-          <div
-            key={i}
-            className="bg-white rounded-lg shadow-sm p-4 border border-gray-200 flex justify-between items-center"
-          >
-            <div>
-              <p className="text-[12px] font-medium text-gray-600">
-                {stat.label}
-              </p>
-              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mt-1">
-                {stat.value}
-              </h3>
+      {/* Stats */}
+      <div className="mb-8">
+        {/* Desktop layout */}
+        <div className="hidden sm:grid sm:grid-cols-3 gap-4">
+          {[
+            {
+              label: "Total Products",
+              value: products.length,
+              icon: <FaBoxOpen />,
+              color: "from-slate-500 to-slate-700",
+            },
+            {
+              label: "Total Stock",
+              value: totalStock,
+              icon: <FaWarehouse />,
+              color: "from-slate-500 to-slate-700",
+            },
+            {
+              label: "Total Value",
+              value: `€${totalValue.toFixed(2)}`,
+              icon: <FaEuroSign />,
+              color: "from-slate-500 to-slate-700",
+            },
+          ].map((stat, i) => (
+            <div
+              key={i}
+              className={`rounded-xl p-3 bg-gradient-to-br ${stat.color} shadow-md flex items-center justify-between`}
+            >
+              <div>
+                <p className="text-sm text-white/80">{stat.label}</p>
+                <h3 className="text-xl font-bold text-white">{stat.value}</h3>
+              </div>
+              <div className="p-2 rounded-full bg-white/20 text-white">
+                <span className="text-base">{stat.icon}</span>
+              </div>
             </div>
-            <div className="p-2 rounded-lg bg-violet-100 text-violet-600">
-              <div className="text-base sm:text-lg">{stat.icon}</div>
-            </div>
+          ))}
+        </div>
+
+        {/* Mobile compact bar */}
+        <div className="sm:hidden flex items-center justify-around bg-white/10 backdrop-blur-md rounded-lg border border-white/20 py-2 px-3 text-md text-white shadow">
+          <div className="flex flex-col items-center">
+            <FaBoxOpen className="text-indigo-300 mb-1" />
+            <span>{products.length}</span>
+            <span className="text-[12px] text-white/60">Products</span>
           </div>
-        ))}
+          <div className="flex flex-col items-center">
+            <FaWarehouse className="text-emerald-300 mb-1" />
+            <span>{totalStock}</span>
+            <span className="text-[12px] text-white/60">Stock</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <FaEuroSign className="text-slate-300 mb-1" />
+            <span>€{totalValue.toFixed(0)}</span>
+            <span className="text-[12px] text-white/60">Value</span>
+          </div>
+        </div>
       </div>
 
       {/* Content split */}
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid lg:grid-cols-2 gap-8">
         {/* Product Form */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
-          <h2 className="text-sm sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">
-            Add New Product
-          </h2>
-          <form onSubmit={submit} className="space-y-4 sm:space-y-5">
-            {/* Title */}
+        <div className="bg-white/10 backdrop-blur-md rounded-xl shadow-lg p-6 border border-white/20">
+          <h2 className="text-lg font-semibold mb-6">➕ Add New Product</h2>
+          <form onSubmit={submit} className="space-y-5">
             <div>
-              <label className="block text-xs sm:text-sm font-medium text-gray-800 mb-1.5">
-                Product Title
-              </label>
+              <label className="block text-sm mb-1">Product Title</label>
               <input
-                className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-violet-500 text-sm text-gray-900 placeholder-gray-700"
+                className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 placeholder-gray-300 focus:ring-2 focus:ring-violet-400 text-white"
                 placeholder="Enter product title"
                 value={form.title}
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
                 required
               />
             </div>
-            {/* Image Upload */}
+
             <div>
-              <label className="block text-xs sm:text-sm font-medium text-gray-800 mb-1.5">
-                Product Image
-              </label>
+              <label className="block text-sm mb-1">Product Image</label>
               {form.image ? (
                 <div className="space-y-2 text-center">
                   <img
                     src={form.image}
                     alt="preview"
-                    className="mx-auto h-32 sm:h-40 object-contain rounded-md"
+                    className="mx-auto h-40 object-contain rounded-md"
                   />
                   <button
                     type="button"
                     onClick={() => setForm({ ...form, image: "" })}
-                    className="text-xs sm:text-sm text-violet-600 hover:text-violet-800"
+                    className="text-sm text-violet-300 hover:text-white"
                   >
                     Change Image
                   </button>
                 </div>
               ) : (
-                <label className="flex flex-col items-center justify-center h-28 sm:h-36 border-2 border-dashed border-gray-400 rounded-lg cursor-pointer hover:border-violet-500 transition">
-                  <FaUpload className="text-gray-500 text-xl sm:text-2xl mb-2" />
-                  <span className="text-xs sm:text-sm text-gray-700">
-                    Upload image
-                  </span>
+                <label className="flex flex-col items-center justify-center h-36 border-2 border-dashed border-white/30 rounded-lg cursor-pointer hover:border-violet-400 transition">
+                  <FaUpload className="text-violet-300 text-2xl mb-2" />
+                  <span className="text-sm text-violet-200">Upload image</span>
                   <input
                     type="file"
                     accept="image/*"
@@ -256,47 +269,41 @@ export default function AdminPage() {
                 </label>
               )}
               {imgUploading && (
-                <div className="flex justify-center text-violet-600 text-xs sm:text-sm mt-2">
-                  <div className="animate-spin h-4 w-4 border-2 border-violet-600 border-t-transparent rounded-full mr-2"></div>
+                <div className="flex justify-center text-violet-200 text-sm mt-2">
+                  <div className="animate-spin h-4 w-4 border-2 border-violet-300 border-t-transparent rounded-full mr-2"></div>
                   Uploading...
                 </div>
               )}
             </div>
-            {/* Price + Stock */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-5">
+
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-800 mb-1.5">
-                  Price (€)
-                </label>
+                <label className="block text-sm mb-1">Price (€)</label>
                 <input
                   type="number"
-                  className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-violet-500 text-sm text-gray-900 placeholder-gray-700"
+                  className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 placeholder-gray-300 focus:ring-2 focus:ring-violet-400 text-white"
                   placeholder="0.00"
                   value={form.price}
                   onChange={(e) => setForm({ ...form, price: e.target.value })}
                 />
               </div>
               <div>
-                <label className="block text-xs sm:text-sm font-medium text-gray-800 mb-1.5">
-                  Stock
-                </label>
+                <label className="block text-sm mb-1">Stock</label>
                 <input
                   type="number"
-                  className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-violet-500 text-sm text-gray-900 placeholder-gray-700"
+                  className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 placeholder-gray-300 focus:ring-2 focus:ring-violet-400 text-white"
                   placeholder="50"
                   value={form.stock}
                   onChange={(e) => setForm({ ...form, stock: e.target.value })}
                 />
               </div>
             </div>
-            {/* Description */}
+
             <div>
-              <label className="block text-xs sm:text-sm font-medium text-gray-800 mb-1.5">
-                Description
-              </label>
+              <label className="block text-sm mb-1">Description</label>
               <textarea
                 rows="3"
-                className="w-full px-3 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-violet-500 text-sm text-gray-900 placeholder-gray-700"
+                className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 placeholder-gray-300 focus:ring-2 focus:ring-violet-400 text-white"
                 placeholder="Product description"
                 value={form.description}
                 onChange={(e) =>
@@ -304,10 +311,10 @@ export default function AdminPage() {
                 }
               />
             </div>
-            {/* Submit */}
+
             <button
               disabled={imgUploading}
-              className="w-full py-2.5 rounded-lg bg-violet-600 text-white text-sm font-medium hover:bg-violet-700 transition disabled:opacity-50"
+              className="w-full py-3 rounded-lg bg-violet-600 hover:bg-violet-700 transition font-medium"
             >
               {imgUploading ? "Processing..." : "Create Product"}
             </button>
@@ -315,45 +322,42 @@ export default function AdminPage() {
         </div>
 
         {/* Product Inventory */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 flex flex-col">
-          <div className="flex items-center justify-between mb-4 sm:mb-6">
-            <h2 className="text-sm sm:text-lg font-semibold text-gray-900">
-              Product Inventory
-            </h2>
+        <div className="bg-white/10 backdrop-blur-md rounded-xl shadow-lg p-6 border border-white/20 flex flex-col">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-lg font-semibold">📋 Product Inventory</h2>
             <button
               onClick={load}
-              className="text-xs sm:text-sm text-gray-700 hover:text-gray-900 flex items-center gap-1"
+              className="text-sm text-violet-200 hover:text-white flex items-center gap-1"
             >
               <FaSync /> Refresh
             </button>
           </div>
+
           {products.length === 0 ? (
-            <div className="text-center py-10 text-gray-600 text-xs sm:text-sm">
+            <div className="text-center py-10 text-violet-200 text-sm">
               No products yet. Add your first product!
             </div>
           ) : (
-            <div className="flex-1 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 space-y-3">
+            <div className="flex-1 overflow-y-auto space-y-3 pr-1 scrollbar-thin scrollbar-thumb-violet-400 scrollbar-track-violet-900/30">
               {products.map((p) => (
                 <div
                   key={p._id}
-                  className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition"
+                  className="flex items-center gap-4 p-4 border border-white/20 rounded-lg bg-white/5 hover:bg-violet-800/40 transition"
                 >
                   <img
                     src={p.image}
                     alt={p.title}
-                    className="h-12 w-12 sm:h-14 sm:w-14 object-cover rounded-md"
+                    className="h-14 w-14 object-cover rounded-md"
                   />
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-medium text-gray-900 truncate text-sm sm:text-base">
-                      {p.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-gray-700">
+                    <h3 className="font-semibold truncate">{p.title}</h3>
+                    <p className="text-sm text-violet-200">
                       €{p.price} • {p.stock} in stock
                     </p>
                   </div>
                   <button
                     onClick={() => del(p._id)}
-                    className="text-gray-500 hover:text-red-600 transition p-1.5 rounded-lg hover:bg-red-50"
+                    className="p-2 rounded-lg bg-red-500/20 text-red-300 hover:bg-red-500/40 transition"
                   >
                     <FaTrash className="text-sm" />
                   </button>
