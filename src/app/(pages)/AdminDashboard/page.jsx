@@ -156,7 +156,7 @@ export default function AdminPage() {
   const totalStock = products.reduce((s, p) => s + (p.stock || 0), 0);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-violet-950 via-purple-900 to-violet-800 text-white p-6">
+    <main className="min-h-screen bg-gradient-to-br from-violet-950 via-violet-950 to-violet-900 text-white p-6">
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-xl sm:text-3xl font-bold">📦 Product Management</h1>
@@ -172,19 +172,19 @@ export default function AdminPage() {
               label: "Total Products",
               value: products.length,
               icon: <FaBoxOpen />,
-              color: "from-slate-500 to-slate-700",
+              color: "from-violet-800 to-slate-950",
             },
             {
               label: "Total Stock",
               value: totalStock,
               icon: <FaWarehouse />,
-              color: "from-slate-500 to-slate-700",
+              color: "from-violet-800 to-slate-950",
             },
             {
               label: "Total Value",
               value: `€${totalValue.toFixed(2)}`,
               icon: <FaEuroSign />,
-              color: "from-slate-500 to-slate-700",
+              color: "from-violet-800 to-slate-950",
             },
           ].map((stat, i) => (
             <div
