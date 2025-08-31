@@ -60,13 +60,7 @@ export default function MobileNav({ isLoggedIn, isAdmin, user }) {
             >
               Shop now
             </Link>
-            <Link
-              href="/shop"
-              onClick={handleLinkClick}
-              className="py-2 font-medium hover:text-fuchsia-300 transition"
-            >
-              Shop
-            </Link>
+
             <Link
               href="/cart"
               onClick={handleLinkClick}
@@ -105,7 +99,15 @@ export default function MobileNav({ isLoggedIn, isAdmin, user }) {
                     Orders
                   </Link>
                 )}
-
+                {isAdmin && (
+                  <Link
+                    href="/admin/messages"
+                    onClick={handleLinkClick}
+                    className="py-2 font-medium hover:text-fuchsia-300 transition"
+                  >
+                    Messages
+                  </Link>
+                )}
                 {/* Avatar dropdown (also works in mobile) */}
                 <div className="py-2" onClick={handleLinkClick}>
                   <AvatarDropdown dark />
