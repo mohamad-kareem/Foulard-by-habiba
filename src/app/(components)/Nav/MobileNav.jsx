@@ -109,7 +109,7 @@ export default function MobileNav({ isLoggedIn, isAdmin, user }) {
                   </Link>
                 )}
                 {/* Avatar dropdown (also works in mobile) */}
-                <div className="py-2" onClick={handleLinkClick}>
+                <div className="py-2">
                   <AvatarDropdown dark />
                 </div>
               </>
